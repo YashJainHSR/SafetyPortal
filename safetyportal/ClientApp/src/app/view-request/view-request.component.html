@@ -1,0 +1,130 @@
+<div class="container-fluid">
+  <div class="row d-flex justify-content-center">
+
+    <form [formGroup]="view" (ngSubmit)="onSubmit()">
+      <div class="align-self-center">
+        <mat-form-field appearance="outline">
+          <mat-label>Request Number</mat-label>
+          <input matInput formControlName="requestNo" placeholder="Request Number">
+        </mat-form-field>
+        &nbsp;<button class="btn btn-secondary" type="submit">Get Status</button>
+      </div>
+      <div *ngIf="submitted && error">
+        <div style="color:red"><b>{{error}}</b></div>
+      </div>
+
+    </form>
+
+  </div>
+  <div *ngIf="request" class="row">
+    <div class="col-sm-6 d-flex justify-content-center mb-3">
+      <div class="table-responsive">
+        <table border="1" style="background-color:white;" class="table table-bordered">
+          <thead>
+            <tr>
+              <th style="text-align:center;" colspan="3">
+                Request Details...
+              </th>
+            </tr>
+          </thead>
+          <tr>
+            <th>Request No</th>
+            <td colspan="2">{{request.requestNo}}</td>
+          </tr>
+          <tr>
+            <th>Category</th>
+            <td colspan="2">{{request.category}}</td>
+          </tr>
+          <tr>
+            <th>Severity</th>
+            <td colspan="2">{{request.severity}}</td>
+          </tr>
+          <tr>
+            <th>Created By</th>
+            <td colspan="2">{{request.createdBy}} ({{createdByName}})</td>
+          </tr>
+          <tr>
+            <th>Department</th>
+            <td colspan="2">{{request.department}}</td>
+          </tr>
+          <tr>
+            <th>Section</th>
+            <td colspan="2">{{request.section}}</td>
+          </tr>
+          <tr>
+            <th>Agency</th>
+            <td colspan="2">{{request.agency}}</td>
+          </tr>
+          <tr rowspan="2">
+            <th>Description</th>
+            <td colspan="2">{{request.description}}</td>
+          </tr>
+          <tr>
+            <th>Observed By</th>
+            <td colspan="2">{{request.observedBy}} ({{observedByName}})</td>
+          </tr>
+          <tr>
+            <th>Shown To</th>
+            <td colspan="2">{{request.shownTo}}</td>
+          </tr>
+          <tr>
+            <th>Assigned To</th>
+            <td colspan="2">{{request.assignedTo}} ({{assignedToName}})</td>
+          </tr>
+          <tr>
+            <th>Target Date</th>
+            <td colspan="2">{{request.targetDate}}</td>
+          </tr>
+          <tr>
+            <th>Action to be Taken</th>
+            <td colspan="2">{{request.actionToBeTaken}}</td>
+          </tr>
+          <tr>
+            <th>Action Taken</th>
+            <td colspan="2">{{request.actionTaken}}</td>
+          </tr>
+          <tr>
+            <th>Work Completion Date</th>
+            <td colspan="2">{{request.completionDate}}</td>
+          </tr>
+          <tr>
+            <th>Request Closing Date</th>
+            <td colspan="2">{{request.closingDate}}</td>
+          </tr>
+          <tr>
+            <th>Justification For Closing</th>
+            <td colspan="2">{{request.justificationForClosing}}</td>
+          </tr>
+        </table>
+        <div class="d-flex justify-content-center">
+          <button class="btn btn-secondary" (click)="onBack()" type="button">
+            Back
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="col-sm-6 align-self-center justify-content-center mb-3">
+      <div class="row">
+        <span style="font-weight:bold;color:green;">
+          Before Image
+        </span>
+        <br />
+        <img [src]="ImageBefore" tabindex=-1 class="img-thumbnail thumbnail img-responsive img-fluid rounded mx-auto d-block" alt="Before Image" />
+
+
+      </div>
+      <br />
+      <br />
+      <br />
+
+      <div class="row">
+        <span style="font-weight:bold;color:green;">
+          After Image
+        </span><br />
+        <img [src]="ImageAfter" tabindex=-1 class="img-thumbnail thumbnail img-responsive img-fluid rounded mx-auto d-block" alt="After Image" />
+      </div>
+    </div>
+  </div>
+</div>

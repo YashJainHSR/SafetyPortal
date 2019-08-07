@@ -1,0 +1,107 @@
+<div class="container-fluid">
+  <div class="row">
+    <div #TABLE class="col-sm-8 d-flex justify-content-center mb-3">
+      <mat-table mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="srno">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Sr. No. </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group;let i = index;"> {{ i+1 }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="id">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Id </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="employeeId">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Employee Id </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.employeeId}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="employeeName">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Employee Name </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.employeeName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="department">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Department Name </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.department}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="section">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Section Name </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.section}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="agency">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Agency Name </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.agency}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="del-editbutton">
+          <th group mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let group" (click)="$event.stopPropagation()">
+            <div class="btn-group mr-2">
+              <button mat-button type="button" class="btn btn-sm btn-outline-secondary" (click)="delete(group.id)"><mat-icon>delete</mat-icon></button>
+              <button mat-button type="button" class="btn btn-sm btn-outline-secondary" (click)="edit(group.id)"><mat-icon>edit</mat-icon></button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr style="height: auto;" class="table-dark text-nowrap" mat-header-row *matHeaderRowDef="displayedColumns;sticky:true;"></tr>
+        <tr mat-row *matRowDef="let row;let even = even; columns: displayedColumns;" [ngClass]="{gray: even}"></tr>
+      </mat-table>
+    </div>
+    <div class="col-sm-4 justify-content-center mb-3">
+      <mat-card>
+        <mat-card-header style="justify-content: center;">
+          <mat-card-title>{{Title}}</mat-card-title>
+        </mat-card-header>
+        <form [formGroup]="addeditAssignedTo" (ngSubmit)="onSubmit()">
+          <mat-card-content style="text-align:center;">
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>Select Employee</mat-label>
+                <mat-select formControlName="employeeId" placeholder="Select Employee" required>
+                  <mat-option value="">-------Select Employee-------</mat-option>
+                  <mat-option *ngFor="let emp of EmpList" [value]="emp.employeeId"> {{emp.employeeId}} ({{emp.name}})</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>Select Department</mat-label>
+                <mat-select formControlName="department" placeholder="Select Department" (selectionChange)="deptselected()" required>
+                  <mat-option value="">---Select Department---</mat-option>
+                  <mat-option *ngFor="let dept of DeptList" [value]="dept.departmentName"> {{dept.departmentName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>Select Section</mat-label>
+                <mat-select formControlName="section" placeholder="Select Section" required>
+                  <mat-option value="">---Select Section---</mat-option>
+                  <mat-option *ngFor="let sec of SecListForDept" [value]="sec.sectionName"> {{sec.sectionName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>Select Agency</mat-label>
+                <mat-select formControlName="agency" placeholder="Select Agency" required>
+                  <mat-option value="">---Select Agency---</mat-option>
+                  <mat-option *ngFor="let agen of AgenList" [value]="agen.agencyName"> {{agen.agencyName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions style="text-align:center;">
+            <button class="btn btn-secondary" type="submit">{{Task}}</button>
+          </mat-card-actions>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="container-fluid">
+  <div class="row">
+    <div #TABLE class="col-sm-8 d-flex justify-content-center mb-3">
+      <mat-table mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="srno">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Sr. No. </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group;let i = index;"> {{ i+1 }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="id">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Id </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="sectionName">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Section Name </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.sectionName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="departmentName">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Department Name </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.departmentName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="del-editbutton">
+          <th group mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let group" (click)="$event.stopPropagation()">
+            <div class="btn-group mr-2">
+              <button mat-button type="button" class="btn btn-sm btn-outline-secondary" (click)="delete(group.id)"><mat-icon>delete</mat-icon></button>
+              <button mat-button type="button" class="btn btn-sm btn-outline-secondary" (click)="edit(group.id)"><mat-icon>edit</mat-icon></button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr style="height: auto;" class="table-dark text-nowrap" mat-header-row *matHeaderRowDef="displayedColumns;sticky:true;"></tr>
+        <tr mat-row *matRowDef="let row;let even = even; columns: displayedColumns;" [ngClass]="{gray: even}"></tr>
+      </mat-table>
+    </div>
+    <div class="col-sm-4 justify-content-center mb-3">
+      <mat-card>
+        <mat-card-header style="justify-content: center;">
+          <mat-card-title>{{Title}}</mat-card-title>
+        </mat-card-header>
+        <form [formGroup]="addeditSection" (ngSubmit)="onSubmit()">
+          <mat-card-content style="text-align:center;">
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>Section Name</mat-label>
+                <input matInput formControlName="sectionName" placeholder="Section Name">
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>Select Department</mat-label>
+                <mat-select formControlName="departmentName" placeholder="Select Department" required>
+                  <mat-option value="">-------Select Department-------</mat-option>
+                  <mat-option *ngFor="let dept of deptList" [value]="dept.departmentName"> {{dept.departmentName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            
+          </mat-card-content>
+
+          <mat-card-actions style="text-align:center;">
+            <button class="btn btn-secondary" type="submit">{{Task}}</button>
+          </mat-card-actions>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

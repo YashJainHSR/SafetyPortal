@@ -1,0 +1,109 @@
+<div class="row d-flex">
+  <div class="col-sm-8 align-self-center">
+    <img [src]="banner" tabindex=-1 class="img-thumbnail thumbnail img-responsive img-fluid rounded mx-auto d-block " alt="Before Image" id="output" />
+  </div>
+
+  <div class="col-sm-4 align-self-center">
+    <form [formGroup]="loginForm" class="form-signin" (ngSubmit)="onSubmit()">
+      <div class="card" style="margin-top:10px">
+        <div class="card-header text-center mb-4">
+          <img [src]="imgURL" style="width:50px;">
+          <h1 class="h3 mb-3 font-weight-normal">Login To Safety Portal</h1>
+        </div>
+        <div class="card-body">
+          <div>
+            <mat-form-field style="width:100%" appearance="outline">
+              <input matInput formControlName="username" oninput="this.value = this.value.toUpperCase()" type="text" id="empid" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" placeholder="User ID" required autofocus>
+              <mat-label for="inputEmail">User ID</mat-label>
+              <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                <div *ngIf="f.username.errors.required">Username is required</div>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <mat-form-field style="width:100%" appearance="outline">
+              <input style="width:75%" matInput pw-show-hide formControlName="password" type="password" id="inputPassword" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="Password" required>
+              &nbsp;
+              <button style="float: right;" mat-button type="button" class="btn btn-sm btn-outline-secondary" (click)="show()">
+                <mat-icon style="display:inline-flex;vertical-align:middle;align-items:center;justify-content:center;padding-bottom:3px;">remove_red_eye</mat-icon>
+              </button>
+              <mat-label for="inputPassword">Password</mat-label>
+              <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                <div *ngIf="f.password.errors.required">Password is required</div>
+              </div>
+            </mat-form-field>
+            &nbsp;
+            
+          </div>
+
+          <button [disabled]="loading" class="btn btn-lg btn-primary btn-block" type="submit">
+            Log in <span *ngIf="loading" style="display:inline-flex;vertical-align:middle;align-items:center;justify-content:center;padding-bottom:3px;" class="spinner-border spinner-border-sm"></span>
+
+          </button>
+
+        </div>
+        <div *ngIf="error" style="text-align:center;" class="alert alert-danger">{{error}}</div>
+        <div class="card-footer">
+          <h6 style="text-align:center;">If you don't have any account, Use the Facilities given below</h6>
+          <button class="btn btn-secondary" style="width:45%;" type="button" (click)="hr()">HR Dept</button>
+          <button class="btn btn-secondary float-right" style="width:45%;" type="button" (click)="cr()">CR Dept</button>
+          <br /><br />
+          <button class="btn btn-block btn-secondary" (click)="check()" type="button">Check Application Status</button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<!--<p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2019</p>-->
+<!--<div class="container align-items-center">
+  <div class="row align-items-center">
+    <div class="col">
+      <div class="body-content justify-content-center">
+        <mat-card class="example-card" style="max-width:270px;">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>User Login</mat-card-title>
+            <mat-card-subtitle></mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <form [formGroup]="profileForm">
+              <div>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>User Name </mat-label>
+                  <input matInput formControlName="username" required placeholder="Employee Code">
+                  <mat-icon matSuffix>perm_identity</mat-icon>
+                  <mat-hint>Employee Code</mat-hint>
+                </mat-form-field>
+              </div>
+
+              <div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Password</mat-label>
+                  <input matInput formControlName="password" required type="password" placeholder="Password">
+                  <mat-icon matSuffix>fingerprint</mat-icon>
+                  <mat-hint>enter user id password to login</mat-hint>
+                </mat-form-field>
+              </div>
+            </form>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button [disabled]="!profileForm.valid" (click)="VSubmit()" mat-button color="primary">Login</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+    <div class="col">
+      <img class="rounded mx-auto d-block"  [src]="imgURL" />
+    </div>
+  </div>
+</div>-->

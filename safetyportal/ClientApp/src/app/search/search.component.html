@@ -1,0 +1,285 @@
+<div >
+<mat-sidenav-container class="example-container">
+  <mat-sidenav opened="true" #sidenav mode="over" [fixedInViewport]="true" [fixedTopGap]="topGap">
+
+    <mat-card>
+      <mat-card-header style="justify-content: center;">
+        <mat-card-title>Filter Request</mat-card-title>
+      </mat-card-header>
+      <form [formGroup]="filterForm" (ngSubmit)="onSubmit()">
+        <br />
+
+        <mat-card-content style="text-align:center;">
+
+          <div>
+            <mat-form-field style="width:45%" appearance="outline">
+              <mat-label>Start Date</mat-label>
+              <input matInput formControlName="startDate" type="date" placeholder="Start Date">
+            </mat-form-field>
+            &nbsp;
+            <mat-form-field style="width:45%" appearance="outline">
+              <mat-label>End Date</mat-label>
+              <input matInput formControlName="endDate" type="date" placeholder="End Date">
+            </mat-form-field>
+          </div>
+
+          <div>
+            <mat-form-field style="width:90%" appearance="outline">
+              <mat-label>Status</mat-label>
+              <mat-select multiple style="text-align-last:center;" formControlName="status" placeholder="Status" required>
+                <mat-checkbox class="mat-option" (ngModel)="selectedStatusValue" [indeterminate]="isStatusIndeterminate()" [checked]="isStatusChecked()" (click)="$event.stopPropagation()" (change)="toggleStatusSelection($event)">
+                  Select All
+                </mat-checkbox>
+                <mat-option value="Pending">Pending</mat-option>
+                <mat-option value="Completed">Completed</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <mat-form-field style="width:45%" appearance="outline">
+              <mat-label>Category</mat-label>
+              <mat-select multiple style="text-align-last:center;" formControlName="category" placeholder="Category" required>
+                <mat-checkbox class="mat-option" (ngModel)="selectedCategoryValue" [indeterminate]="isCategoryIndeterminate()" [checked]="isCategoryChecked()" (click)="$event.stopPropagation()" (change)="toggleCategorySelection($event)">
+                  Select All
+                </mat-checkbox>
+                <mat-option value="Unsafe Condition">Unsafe Condition</mat-option>
+                <mat-option value="Unsafe Act">Unsafe Act</mat-option>
+                <mat-option value="Near Miss">Near Miss</mat-option>
+              </mat-select>
+            </mat-form-field>
+            &nbsp;&nbsp;
+            <mat-form-field style="width:45%" appearance="outline">
+              <mat-label>Severity</mat-label>
+              <mat-select multiple style="text-align-last:center;" formControlName="severity" placeholder="Severity" required>
+                <mat-checkbox class="mat-option" (ngModel)="selectedSeverityValue" [indeterminate]="isSeverityIndeterminate()" [checked]="isSeverityChecked()" (click)="$event.stopPropagation()" (change)="toggleSeveritySelection($event)">
+                  Select All
+                </mat-checkbox>
+                <mat-option value="Normal">Normal</mat-option>
+                <mat-option value="Critical">Critical</mat-option>
+                <mat-option value="Most Critical">Most Critical</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+
+          <div>
+            <mat-form-field style="width:92%" appearance="outline">
+              <mat-label>Department</mat-label>
+              <mat-select multiple style="text-align-last:center;" formControlName="department" placeholder="Department" (selectionChange)="deptselected()" required>
+                <mat-checkbox class="mat-option" (ngModel)="selectedDepartmentValue" [indeterminate]="isDepartmentIndeterminate()" [checked]="isDepartmentChecked()" (click)="$event.stopPropagation()" (change)="toggleDepartmentSelection($event)">
+                  Select All
+                </mat-checkbox>
+                <mat-option *ngFor="let dept of DeptList" [value]="dept.departmentName"> {{dept.departmentName}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+
+          <div>
+            <mat-form-field style="width:45%" appearance="outline">
+              <mat-label>Section</mat-label>
+              <mat-select multiple style="text-align-last:center;" formControlName="section" placeholder="Section" (selectionChange)="deptSecAgenselected()" required>
+                <mat-checkbox class="mat-option" (ngModel)="selectedSectionValue" [indeterminate]="isSectionIndeterminate()" [checked]="isSectionChecked()" (click)="$event.stopPropagation()" (change)="toggleSectionSelection($event)">
+                  Select All
+                </mat-checkbox>
+                <mat-option *ngFor="let sec of SecListForDept" [value]="sec.sectionName"> {{sec.sectionName}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            &nbsp;&nbsp;
+            <mat-form-field style="width:45%" appearance="outline">
+              <mat-label>Agency</mat-label>
+              <mat-select multiple style="text-align-last:center;" formControlName="agency" placeholder="Agency" (selectionChange)="deptSecAgenselected()" required>
+                <mat-checkbox class="mat-option" (ngModel)="selectedAgencyValue" [indeterminate]="isAgencyIndeterminate()" [checked]="isAgencyChecked()" (click)="$event.stopPropagation()" (change)="toggleAgencySelection($event)">
+                  Select All
+                </mat-checkbox>
+                <mat-option *ngFor="let agen of AgenList" [value]="agen.agencyName"> {{agen.agencyName}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <mat-form-field style="width:92%" appearance="outline">
+              <mat-label>Created By</mat-label>
+              <mat-select multiple style="text-align-last:center;" formControlName="createdBy" placeholder="Employee ID" required>
+                <mat-checkbox class="mat-option" (ngModel)="selectedCreatedByValue" [indeterminate]="isCreatedByIndeterminate()" [checked]="isCreatedByChecked()" (click)="$event.stopPropagation()" (change)="toggleCreatedBySelection($event)">
+                  Select All
+                </mat-checkbox>
+                <mat-option value="NDO_CR">NDO_CR</mat-option>
+                <mat-option value="NDO_HR">NDO_HR</mat-option>
+                <mat-option *ngFor="let emp of EmpList" [value]="emp.employeeId"> {{emp.employeeId}} ({{emp.name}})</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </div>
+
+          <div>
+            <mat-form-field style="width:45%" appearance="outline">
+              <mat-label>Observed By</mat-label>
+              <mat-select multiple style="text-align-last:center;" formControlName="observedBy" placeholder="" required>
+                <mat-checkbox class="mat-option" (ngModel)="selectedObservedByValue" [indeterminate]="isObservedByIndeterminate()" [checked]="isObservedByChecked()" (click)="$event.stopPropagation()" (change)="toggleObservedBySelection($event)">
+                  Select All
+                </mat-checkbox>
+                <mat-option *ngFor="let emp of EmpList" [value]="emp.employeeId"> {{emp.employeeId}} ({{emp.name}})</mat-option>
+              </mat-select>
+            </mat-form-field>
+            &nbsp;&nbsp;
+            <mat-form-field style="width:45%" appearance="outline">
+              <mat-label>Assigned To</mat-label>
+              <mat-select multiple style="text-align-last:center;" formControlName="assignedTo" placeholder="Assigned To" required>
+                <mat-checkbox class="mat-option" (ngModel)="selectedAssignedToValue" [indeterminate]="isAssignedToIndeterminate()" [checked]="isAssignedToChecked()" (click)="$event.stopPropagation()" (change)="toggleAssignedToSelection($event)">
+                  Select All
+                </mat-checkbox>
+                <mat-option *ngFor="let assign of Assign" [value]="assign.employeeId"> {{assign.employeeId}} ({{assign.name}}) </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions style="text-align:center;">
+          <button [disabled]="!load"  class="btn btn-secondary" (click)="sidenav.toggle()" type="submit">
+            Filter
+            <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card>
+
+
+  </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div id="dash" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-3 border-bottom">
+        <h1 class="h2">Search Results</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="sidenav.toggle()">Filter</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="ExportTOExcel()">Export</button>
+          </div>&nbsp;
+        </div>
+      </div>
+
+      <div #TABLE>
+        <p *ngIf="loading"><em>Loading...</em></p>
+
+        <mat-table mat-table [dataSource]="dataSource" matSort matSortActive="requestNo" matSortDisableClear matSortDirection="desc">
+
+          <ng-container matColumnDef="srno">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Sr. No. </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group;let i = index;"> {{ i+1 }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="requestNo">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Req. No. </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.requestNo}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Status </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.status}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="requestDate">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Request Date </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.requestDate}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="department">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Department </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.department}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="section">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Section </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.section}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="agency">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Agency </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.agency}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Description </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.description}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="observedBy">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Observed By </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.observedBy}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="shownTo">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Shown To </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.shownTo}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actionToBeTaken">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Action to be Taken </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.actionToBeTaken}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="assignedTo">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Assigned To </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.assignedTo}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="targetDate">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Target Date </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.targetDate}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="category">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Category </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.category}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="createdBy">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Created By </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.createdBy}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actionTaken">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Action Taken </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.actionTaken}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="completionDate">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Completion Date </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.completeDate}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="closingDate">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Closing Date </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.closingDate}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="justificationForClosing">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Justification for Pendency </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.justificationForClosing}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="severity">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Severity </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.severity}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="aging">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Aging </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{calc(group.requestDate)}} </td>
+          </ng-container>
+          <ng-container matColumnDef="area">
+            <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Area </h6> </kbd> </th>
+            <td mat-cell *matCellDef="let group"> {{group.area}} </td>
+          </ng-container>
+
+
+          <tr style="height: auto;" class="table-dark text-nowrap" mat-header-row *matHeaderRowDef="displayedColumns;sticky:true;"></tr>
+          <tr mat-row *matRowDef="let row;let even = even; columns: displayedColumns;" [ngClass]="{gray: even}"></tr>
+        </mat-table>
+        <mat-paginator #paginator style="background-color:transparent;" [showFirstLastButtons]="true" [pageSize]="dataSource.data.length" [pageSizeOptions]="[dataSource.data.length,5, 10, 25, 100]"></mat-paginator>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+ </div>

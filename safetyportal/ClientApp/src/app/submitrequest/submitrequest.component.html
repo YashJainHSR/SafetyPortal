@@ -1,0 +1,157 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6 d-flex justify-content-center mb-3">
+
+      <mat-card>
+        <mat-card-header style="justify-content: center;">
+          <mat-card-title>Submit Request</mat-card-title>
+        </mat-card-header>
+        <form [formGroup]="submitForm" id="sbmtform" (ngSubmit)="onSubmit()">
+          <mat-card-content style="text-align:center;">
+
+            <div>
+              <mat-form-field style="width:45%" appearance="outline">
+                <mat-label>Category</mat-label>
+                <mat-select style="text-align-last:center;" formControlName="category" placeholder="Category" required>
+                  <mat-option value="">---Select Category---</mat-option>
+                  <mat-option value="Unsafe Condition">Unsafe Condition</mat-option>
+                  <mat-option value="Unsafe Act">Unsafe Act</mat-option>
+                  <mat-option value="Near Miss">Near Miss</mat-option>
+                </mat-select>
+              </mat-form-field>
+              &nbsp;&nbsp;
+              <mat-form-field style="width:45%" appearance="outline">
+                <mat-label>Severity</mat-label>
+                <mat-select style="text-align-last:center;" formControlName="severity" placeholder="Severity" required>
+                  <mat-option value="">---Select Severity---</mat-option>
+                  <mat-option title="Source, condition or Act which may create low severity & consequence risk (First aid injury /No injury/ damage to property within work station) or incident in near future." value="Normal">Normal</mat-option>
+                  <mat-option title="Source, condition or Act which may create medium or high severity & consequence risk (Major /reportable injury/ spread of damage to property within premises) or incident immediately." value="Critical">Critical</mat-option>
+                  <mat-option title="Source, condition or Act which may create very high severity & consequence risk (Fatal injury /Legal concern/ spread of damage to property outside the premises) or incident immediately. Following acts will be of most critical nature:
+(i)  Explosion of Vessel/ receiver or container used for the storage at a pressure
+greater than atmospheric pressure of any gas or gases (including air) or any
+liquid or solid resulting from the compression of gas
+(ii) Collapse or failure crane, derrick, winch hoist or other appliances used in
+raising lowering persons or goods or any part thereof or the overturning of a
+crane.
+(iii) Explosion or fire causing damage to any room or place in which persons
+are employed
+(iv) Collapse or subsidence of any floor, gallery, roof bridge, tunnel, chimney,
+wall or building forming part of a factory or within the compound." value="Most Critical">Most Critical</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+
+            <div>
+              <mat-form-field  style="width:45%" appearance="outline">
+                <mat-label>Created By</mat-label>
+                <input (focusout)="getEmployee()" matInput formControlName="createdBy"   placeholder="Employee ID" required >
+              </mat-form-field>
+              &nbsp;
+              <div style="display: inline-block;width:45%"><b><i>{{employeename}}</i></b></div>
+            </div>
+
+            <div>
+              <mat-form-field style="width:92%" appearance="outline">
+                <mat-label>Department</mat-label>
+                <mat-select style="text-align-last:center;" formControlName="department" placeholder="Department" (selectionChange)="deptselected()" required>
+                  <mat-option value="">---Select Department---</mat-option>
+                  <mat-option *ngFor="let dept of DeptList" [value]="dept.departmentName"> {{dept.departmentName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+
+            <div>
+              <mat-form-field style="width:45%" appearance="outline">
+                <mat-label>Section</mat-label>
+                <mat-select style="text-align-last:center;" formControlName="section" placeholder="Section" (selectionChange)="deptSecAgenselected()" required>
+                  <mat-option value="">---Select Section---</mat-option>
+                  <mat-option *ngFor="let sec of SecListForDept" [value]="sec.sectionName"> {{sec.sectionName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              &nbsp;&nbsp;
+              <mat-form-field style="width:45%" appearance="outline">
+                <mat-label>Agency</mat-label>
+                <mat-select style="text-align-last:center;" formControlName="agency" placeholder="Agency" (selectionChange)="deptSecAgenselected()" required>
+                  <mat-option value="">---Select Agency---</mat-option>
+                  <mat-option *ngFor="let agen of AgenList" [value]="agen.agencyName"> {{agen.agencyName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+
+            <div>
+              <mat-form-field appearance="outline" style="width:70%">
+                <mat-label>Description</mat-label>
+                <textarea required matInput formControlName="description" placeholder="Description"></textarea>
+              </mat-form-field>
+              &nbsp;
+              <div style="display: inline-block;width:20%">
+                <button type="button" matButton color="primary" (click)="file.click()">Upload</button>
+                <input hidden type="file" accept='image/*' #file (change)="preview(file.files)">
+              </div>
+            </div>
+
+            <div>
+              <mat-form-field style="width:45%" appearance="outline">
+                <mat-label>Observed By</mat-label>
+                <mat-select style="text-align-last:center;" formControlName="observedBy" placeholder="Observed By" required>
+                  <mat-option value="">---Observed By---</mat-option>
+                  <mat-option *ngFor="let emp of EmpList" [value]="emp.employeeId"> {{emp.employeeId}} ({{emp.name}})</mat-option>
+                </mat-select>
+              </mat-form-field>
+              &nbsp;&nbsp;
+              <mat-form-field style="width:45%" appearance="outline">
+                <mat-label>Shown To</mat-label>
+                <input matInput formControlName="shownTo" placeholder="Shown To">
+              </mat-form-field>
+            </div>
+
+            <div>
+              <mat-form-field style="width:45%" appearance="outline">
+                <mat-label>Assigned To</mat-label>
+                <mat-select style="text-align-last:center;" formControlName="assignedTo" placeholder="Assigned To" required>
+                  <mat-option value="">---Assign To---</mat-option>
+                  <mat-option *ngFor="let assign of Assign" [value]="assign.employeeId"> {{assign.employeeId}} ({{assign.name}}) </mat-option>
+                </mat-select>
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field style="width:45%" appearance="outline">
+                <mat-label>Target date</mat-label>
+                <input matInput  type="date" formControlName="targetDate" placeholder="Target date" required>
+              </mat-form-field>
+            </div>
+
+            <div>
+              <mat-form-field style="width:92%" appearance="outline">
+                <mat-label>Action to be taken</mat-label>
+                <input matInput formControlName="actionToBeTaken" placeholder="Action to be taken" required>
+              </mat-form-field>
+            </div>
+            <div>
+            </div>
+
+          </mat-card-content>
+
+          <mat-card-actions style="text-align:center;">
+            <button [disabled]="submitted" class="btn btn-secondary" type="submit">
+              Submit
+              <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+
+            </button>
+          </mat-card-actions>
+        </form>
+      </mat-card>
+
+    </div>
+    <div class="col-sm-6 align-self-start justify-content-center mb-3">
+      <img [src]="imgURL" tabindex=-1 class="img-thumbnail thumbnail img-responsive img-fluid rounded mx-auto d-block" alt="Before Image" id="output" />
+      <br />
+      <span style="font-weight:bold;color:green;" *ngIf="message">
+        {{message}}
+      </span>
+    </div>
+
+  </div>
+</div>

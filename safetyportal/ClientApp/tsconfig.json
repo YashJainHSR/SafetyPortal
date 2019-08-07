@@ -6,6 +6,7 @@
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
+    "allowJs": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
@@ -14,6 +15,7 @@
     ],
     "lib": [
       "es2017",
+      "es2015",
       "dom"
     ]
   }

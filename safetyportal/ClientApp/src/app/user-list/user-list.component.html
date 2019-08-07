@@ -1,0 +1,99 @@
+<div class="container-fluid">
+  <div class="row">
+    <div #TABLE class="col-sm-8 d-flex justify-content-center mb-3">
+      <mat-table mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="srno">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Sr. No. </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group;let i = index;">
+            <mat-icon style="display:inline-flex;vertical-align:middle;align-items:center;justify-content:center;padding-bottom:3px;">perm_identity</mat-icon>
+            {{ i+1 }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="id">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Id </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group">
+
+            {{group.id}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="username">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> User ID </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.username}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Name </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Role </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.role}} </td>
+        </ng-container>
+        <ng-container matColumnDef="password">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Password </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group">
+            <mat-icon data-toggle="tooltip" data-placement="right" [title]="group.password" style="display:inline-flex;vertical-align:middle;align-items:center;justify-content:center;padding-bottom:3px;">fingerprint</mat-icon>
+            {{group.password}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="del-editbutton">
+          <th group mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let group" (click)="$event.stopPropagation()">
+            <div class="btn-group mr-2">
+              <button mat-button type="button" class="btn btn-sm btn-outline-secondary" (click)="delete(group.id)"><mat-icon>delete</mat-icon></button>
+              <button mat-button type="button" class="btn btn-sm btn-outline-secondary" (click)="edit(group.id)"><mat-icon>edit</mat-icon></button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr style="height: auto;" class="table-dark text-nowrap" mat-header-row *matHeaderRowDef="displayedColumns;sticky:true;"></tr>
+        <tr mat-row *matRowDef="let row;let even = even; columns: displayedColumns;" [ngClass]="{gray: even}"></tr>
+      </mat-table>
+    </div>
+    <div class="col-sm-4 justify-content-center mb-3">
+      <mat-card>
+        <mat-card-header style="justify-content: center;">
+          <mat-card-title>{{Title}}</mat-card-title>
+        </mat-card-header>
+        <form [formGroup]="addeditCred" (ngSubmit)="onSubmit()">
+          <mat-card-content style="text-align:center;">
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>User ID</mat-label>
+                <input oninput="this.value = this.value.toUpperCase()" matInput formControlName="username" placeholder="User ID">
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" placeholder="Password">
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>Select Role</mat-label>
+                <mat-select formControlName="role" placeholder="Select Role">
+                  <mat-option value="">---Select Role---</mat-option>
+                  <mat-option value="User">User</mat-option>
+                  <mat-option value="HOD">HOD</mat-option>
+                  <mat-option value="Nodal">Nodal</mat-option>
+                  <mat-option value="Safety">Safety</mat-option>
+                  <mat-option value="Admin">Admin</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions style="text-align:center;">
+            <button class="btn btn-secondary" type="submit">{{Task}}</button>
+          </mat-card-actions>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

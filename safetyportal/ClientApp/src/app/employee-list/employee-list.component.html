@@ -1,0 +1,121 @@
+<div class="container-fluid">
+  <div class="row">
+    <div #TABLE class="col-sm-8 d-flex justify-content-center mb-3">
+      <mat-table mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="srno">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Sr. </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group;let i = index;"> {{ i+1 }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="employeeId">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Employee Id </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.employeeId}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Employee Name </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Email ID </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="department">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Department </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.department}} </td>
+        </ng-container>
+         <ng-container matColumnDef="phone">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Phone </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.phone}} </td>
+        </ng-container>
+
+         <ng-container matColumnDef="intercom">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Intercom </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.intercom}} </td>
+        </ng-container>
+
+         <ng-container matColumnDef="area">
+          <th group mat-header-cell *matHeaderCellDef mat-sort-header> <kbd> <h6> Area </h6> </kbd> </th>
+          <td mat-cell *matCellDef="let group"> {{group.area}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="del-editbutton">
+          <th group mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let group" (click)="$event.stopPropagation()">
+            <div class="btn-group mr-2">
+              <button mat-button type="button" class="btn btn-sm btn-outline-secondary" (click)="delete(group.employeeId)"><mat-icon>delete</mat-icon></button>
+              <button mat-button type="button" class="btn btn-sm btn-outline-secondary" (click)="edit(group.employeeId)"><mat-icon>edit</mat-icon></button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr style="height: auto;" class="table-dark text-nowrap" mat-header-row *matHeaderRowDef="displayedColumns;sticky:true;"></tr>
+        <tr mat-row *matRowDef="let row;let even = even; columns: displayedColumns;" [ngClass]="{gray: even}"></tr>
+      </mat-table>
+    </div>
+    <div class="col-sm-4 justify-content-center mb-3">
+      <mat-card>
+        <mat-card-header style="justify-content: center;">
+          <mat-card-title>{{Title}}</mat-card-title>
+        </mat-card-header>
+        <form [formGroup]="addeditEmployee" (ngSubmit)="onSubmit()">
+          <mat-card-content style="text-align:center;">
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>Employee ID</mat-label>
+                <input matInput formControlName="employeeId" placeholder="Employee ID">
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>Employee Name</mat-label>
+                <input matInput formControlName="name" placeholder="Employee Name">
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>Email ID</mat-label>
+                <input matInput formControlName="email" placeholder="Email ID">
+              </mat-form-field>
+            </div>
+
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>Select Department</mat-label>
+                <mat-select formControlName="department" placeholder="Select Department">
+                  <mat-option value="">---Select Department---</mat-option>
+                  <mat-option *ngFor="let dept of deptList" [value]="dept.departmentName"> {{dept.departmentName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>Phone</mat-label>
+                <input matInput formControlName="phone" placeholder="Phone">
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>Intercom</mat-label>
+                <input matInput formControlName="intercom" placeholder="Intercom">
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" style="width:90%">
+                <mat-label>Area</mat-label>
+                <input matInput formControlName="area" placeholder="Area">
+              </mat-form-field>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions style="text-align:center;">
+            <button class="btn btn-secondary" type="submit">{{Task}}</button>
+          </mat-card-actions>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

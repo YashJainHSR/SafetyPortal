@@ -1,24 +1,106 @@
-<header>
-  <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3'>
-    <div class="container">
-      <a class="navbar-brand" [routerLink]='["/"]'>safetyportal</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Toggle navigation"
-        [attr.aria-expanded]="isExpanded" (click)="toggle()">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]='{"show": isExpanded}'>
-        <ul class="navbar-nav flex-grow">
-          <li class="nav-item" [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
-            <a class="nav-link text-dark" [routerLink]='["/"]'>Home</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]='["link-active"]'>
-            <a class="nav-link text-dark" [routerLink]='["/counter"]'>Counter</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]='["link-active"]'>
-            <a class="nav-link text-dark" [routerLink]='["/fetch-data"]'>Fetch data</a>
-          </li>
-        </ul>
+
+<div #top id="topNav" style="flex-direction: row;" class="navbar navbar-expand-md navbar-dark bg-dark sticky-top d-flex flex-wrap shadow ">
+  <img [src]="imgURL" style="width:8%;height:130%">&nbsp;
+  <a class="navbar-brand" [routerLink]="['/']">Safety Portal</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Toggle navigation" [attr.aria-expanded]="isExpanded" (click)="toggle()">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <span hidden *ngIf="refresh && currentUser">{{getnav()}}</span>
+  <div class="collapse navbar-collapse flex-wrap" [ngClass]='{"show": isExpanded}' id="navbarCollapse">
+    <ul *ngIf="currentUser" class="nav navbar-nav">
+      <li *ngIf="isNormal" class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/submitrequest']">Submit New Request</a>
+      </li>&nbsp;
+      <li *ngIf="isNormal" class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/submittedrequest']">Submitted Requests&nbsp;<span class="badge badge-light">{{SubmittedCount()}}</span></a>
+      </li>&nbsp;
+      <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/pendingrequest']">Pending Req.&nbsp;<span class="badge badge-light">{{PendingCount()}}</span></a>
+      </li>&nbsp;
+      <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/completerequest']">Completed Req.&nbsp;<span class="badge badge-light">{{CompletedCount()}}</span></a>
+      </li>&nbsp;
+      <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/allrequest']">All Req.&nbsp;<span class="badge badge-light">{{AllCount()}}</span></a>
+      </li>&nbsp;
+      <li *ngIf="isSafety || isAdmin || isHOD" class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/deletedrequest']"><mat-icon style="display:inline-flex;vertical-align:middle;align-items:center;justify-content:center;padding-bottom:3px;">delete</mat-icon>&nbsp;<span class="badge badge-light">{{DeletedCount()}}</span></a>
+      </li>&nbsp;
+      <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/search']"><mat-icon style="display:inline-flex;vertical-align:middle;align-items:center;justify-content:center;padding-bottom:3px;">search</mat-icon></a>
+      </li>&nbsp;
+      <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/inbox']"><mat-icon style="display:inline-flex;vertical-align:middle;align-items:center;justify-content:center;padding-bottom:3px;">move_to_inbox</mat-icon>&nbsp;<span class="badge badge-light">{{InboxCount()}}</span></a>
+      </li>&nbsp;
+      <!--<li *ngIf="isNormal || isSafety || isNodal || isHOD || isAdmin" class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+    <a class="nav-link" [routerLink]="['/summary']">Summary</a>
+  </li>&nbsp;-->
+      <li *ngIf="isSafety || isAdmin" class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/deptlist']">Dept. List</a>
+      </li>
+      <li *ngIf="isSafety || isAdmin" class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/sectionlist']">Section List</a>
+      </li>
+      <li *ngIf="isSafety || isAdmin" class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/agencylist']">Agency List</a>
+      </li>
+      <li *ngIf="isSafety || isAdmin" class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/assignemployee']">Assign Emp.</a>
+      </li>
+      <li *ngIf="isSafety || isAdmin" class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/hodlist']">HOD List</a>
+      </li>
+      <li *ngIf="isSafety || isAdmin" class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/nodallist']">Nodal Officer List</a>
+      </li>
+      <li *ngIf="isSafety || isAdmin" class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/userlist']">User List</a>
+      </li>
+      <li *ngIf="isSafety || isAdmin" class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/emplist']">Emp List</a>
+      </li>
+      <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/resetpassword']">{{currentUser.username}}</a>
+      </li>
+
+    </ul>
+      <div *ngIf="currentUser" class="ml-auto">
+        <button (click)="logout()" class="btn btn-outline-success my-2 my-sm-0" type="submit">Log Out</button>
       </div>
     </div>
-  </nav>
-</header>
+
+  </div>
+<!--<nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3'>
+  <div class="container">
+    <a class="navbar-brand" ><b>Safety Portal</b></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Toggle navigation"
+            [attr.aria-expanded]="isExpanded" (click)="toggle()">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]='{"show": isExpanded}'>
+      <ul class="navbar-nav flex-grow">
+        <li class="nav-item" [routerLinkActive]="['active']" >
+          <a class="nav-link text-dark" [routerLink]="['/submitrequest']"><b>Submit Request</b></a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']" >
+          <a class="nav-link text-dark" [routerLink]="['/search']"><b>Search</b></a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']">
+          <a class="nav-link text-dark" [routerLink]="['/fetch-data']"><b>Completed Req</b></a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']">
+          <a class="nav-link text-dark" [routerLink]="['/fetch-data']"><b>Pending Req</b></a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']">
+          <a class="nav-link text-dark" [routerLink]="['/fetch-data']"><b>All Request</b></a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']">
+          <a class="nav-link text-dark" [routerLink]="['/reports']"><b>Reports</b></a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']">
+          <a class="nav-link text-dark" [routerLink]="['/login']"><b>Login</b></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>-->
