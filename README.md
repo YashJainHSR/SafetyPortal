@@ -1,5 +1,5 @@
 # SafetyPortal
-Safety Portal is a Web APP (created using Angular-NodeJS-Web APIs and it is based on MVC structure)
+Safety Portal is a Web APP (created using Angular-NodeJS-Web APIs)
 
 
 # About the Portal
