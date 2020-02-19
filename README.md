@@ -1,5 +1,5 @@
 # SafetyPortal
-Safety Portal is a Web APP (created using Angular-NodeJS-REST APIs)
+Safety Portal is a Web APP (created using Angular-REST APIs in .NET)
 
 
 # About the Portal
